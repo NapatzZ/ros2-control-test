@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<robot name="my_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:arg name="use_mock_hardware" default="true" />
+
+  <link name="base_link"/>
+  <link name="link_1"/>
+  <link name="link_2"/>
+
+  <joint name="arm_base_link_link_1" type="revolute">
+    <parent link="base_link"/>
+    <child link="link_1"/>
+    <limit lower="-3.14" upper="3.14" effort="10.0" velocity="1.0"/>
+  </joint>
+
+  <joint name="arm_link_1_arm_link_2" type="revolute">
+    <parent link="link_1"/>
+    <child link="link_2"/>
+    <limit lower="-3.14" upper="3.14" effort="10.0" velocity="1.0"/>
+  </joint>
+
+  <ros2_control name="MyRobotHardware" type="system">
+    <hardware>
+      
+      <xacro:if value="$(arg use_mock_hardware)">
+        <plugin>mock_components/GenericSystem</plugin>
+      </xacro:if>
+
+      <xacro:unless value="$(arg use_mock_hardware)">
+        <plugin>dynamixel_hardware_interface/DynamixelHardware</plugin>
+        
+        </xacro:unless>
+
+    </hardware>
+
+    <joint name="arm_base_link_link_1">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="arm_link_1_arm_link_2">
+      <command_interface name="position"/>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+  </ros2_control>
+
+</robot>
