@@ -28,10 +28,30 @@
 
       <xacro:unless value="$(arg use_mock_hardware)">
         <plugin>dynamixel_hardware_interface/DynamixelHardware</plugin>
-        
+        <param name="number_of_joints">2</param>
+        <param name="number_of_transmissions">2</param>        
+        <param name="port_name">/dev/dynamixel</param>
+        <param name="baud_rate">1000000</param>
+        <param name="dynamixel_model_folder">/param/dxl_model/</param>
+        <param name="error_timeout_ms">500</param>
+        <param name="disable_torque_at_init">false</param>
         </xacro:unless>
 
     </hardware>
+
+    <gpio name="joint1_gpio">
+      <param name="ID">1</param>
+      <param name="type">dxl</param>
+      <param name="Operating Mode">3</param> <!-- Mode Position -->
+      <param name="Torque Enable">1</param>  <!-- Enable Torque -->
+    </gpio>
+
+    <gpio name="joint2_gpio">
+      <param name="ID">2</param>
+      <param name="type">dxl</param>
+      <param name="Operating Mode">3</param> <!-- Mode Position -->
+      <param name="Torque Enable">1</param>  <!-- Enable Torque -->
+    </gpio>
 
     <joint name="arm_base_link_link_1">
       <command_interface name="position"/>
